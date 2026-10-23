@@ -1,0 +1,13 @@
+{
+  "topic": "Choosing an editorial review workflow",
+  "audience": "Small B2B marketing teams",
+  "goal": "Choose a repeatable source review process",
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://example.com/synthetic-research",
+      "title": "Synthetic editorial notes",
+      "excerpt": "This fixture illustrates a team recording source IDs before reviewing claims. It is not published research."
+    }
+  ]
+}

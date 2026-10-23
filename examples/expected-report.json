@@ -1,0 +1,44 @@
+{
+  "kind": "editorial_brief",
+  "topic": "Choosing an editorial review workflow",
+  "audience": "Small B2B marketing teams",
+  "goal": "Choose a repeatable source review process",
+  "product_facts_supplied_unverified": [],
+  "outline": [
+    {
+      "section": "Reader's problem",
+      "instruction": "State the audience's decision and constraints; avoid invented prevalence."
+    },
+    {
+      "section": "Evidence and options",
+      "instruction": "Compare alternatives using supplied excerpts; cite source IDs after claims."
+    },
+    {
+      "section": "Practical steps",
+      "instruction": "Explain prerequisites, steps, tradeoffs and verification."
+    },
+    {
+      "section": "Limitations and next action",
+      "instruction": "List unknowns and an action aligned with the goal."
+    }
+  ],
+  "source_ledger": [
+    {
+      "id": "S1",
+      "url": "https://example.com/synthetic-research",
+      "title": "Synthetic editorial notes",
+      "excerpt": "This fixture illustrates a team recording source IDs before reviewing claims. It is not published research."
+    }
+  ],
+  "acceptance_checks": [
+    "Every material factual claim reviewed against source text",
+    "No invented customer proof or metrics",
+    "Citations use [S1] style IDs",
+    "Clear next action appropriate to the audience"
+  ],
+  "limitations": [
+    "A planning deliverable, not a generated finished article.",
+    "Supplied excerpts and product facts are not independently verified.",
+    "Use the OpenAI agent runner to draft from this brief; review its claims manually."
+  ]
+}
