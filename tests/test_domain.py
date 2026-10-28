@@ -44,6 +44,27 @@ def test_citation_and_numeric_review():
     assert r["publication_gate"] == "human_review_required"
 
 
+def test_prohibited_term_matches_standalone_word_not_substrings():
+    result = review_draft(
+        EditorialInput(
+            draft="Paid subscriptions are available.\nAn AI-powered workflow.\nEmail is enabled.",
+            prohibited_terms=["AI"],
+        )
+    )
+    matches = [f for f in result["findings"] if f["code"] == "prohibited_term"]
+    assert [(f["line"], f["evidence"]) for f in matches] == [(2, "AI")]
+
+
+def test_prohibited_phrase_matches_case_insensitively():
+    result = review_draft(
+        EditorialInput(
+            draft="Repayment terms apply.\nAvoid PAY-TO-PLAY coverage.",
+            prohibited_terms=["pay-to-play"],
+        )
+    )
+    matches = [f for f in result["findings"] if f["code"] == "prohibited_term"]
+    assert [(f["line"], f["evidence"]) for f in matches] == [(2, "pay-to-play")]
+
 def test_duplicate_source_rejected():
     with pytest.raises(ValidationError):
         EditorialInput(draft="x", sources=[SOURCE, SOURCE])
