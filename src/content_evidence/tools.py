@@ -151,6 +151,11 @@ def review_draft(p: EditorialInput) -> dict:
     known = {s.id for s in p.sources}
     cited = set(re.findall(r"\[(S\d+)\]", p.draft))
     findings = []
+    # Match editorial terms as complete words or phrases, not substrings of unrelated words.
+    prohibited_patterns = [
+        (term, re.compile(r"(?<!\\w)" + re.escape(term.strip()) + r"(?!\\w)", re.I))
+        for term in p.prohibited_terms
+    ]
     for source in sorted(cited - known):
         findings.append(
             {
@@ -174,8 +179,8 @@ def review_draft(p: EditorialInput) -> dict:
                     "action": "Verify this quantitative claim and attach supporting evidence.",
                 }
             )
-        for term in p.prohibited_terms:
-            if term.casefold() in line.casefold():
+        for term, pattern in prohibited_patterns:
+            if pattern.search(line):
                 findings.append(
                     {
                         "code": "prohibited_term",
