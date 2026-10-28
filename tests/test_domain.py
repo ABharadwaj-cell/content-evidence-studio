@@ -44,7 +44,6 @@ def test_citation_and_numeric_review():
     assert r["publication_gate"] == "human_review_required"
 
 
-
 def test_prohibited_term_matches_standalone_word_not_substrings():
     result = review_draft(
         EditorialInput(
