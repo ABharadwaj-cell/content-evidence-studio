@@ -153,7 +153,7 @@ def review_draft(p: EditorialInput) -> dict:
     findings = []
     # Match editorial terms as complete words or phrases, not substrings of unrelated words.
     prohibited_patterns = [
-        (term, re.compile(r"(?<!\\w)" + re.escape(term.strip()) + r"(?!\\w)", re.I))
+        (term, re.compile(r"(?<!\w)" + re.escape(term.strip()) + r"(?!\w)", re.I))
         for term in p.prohibited_terms
     ]
     for source in sorted(cited - known):
