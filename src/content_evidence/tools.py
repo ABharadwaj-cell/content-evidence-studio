@@ -21,9 +21,20 @@ class Source(Input):
     @field_validator("url")
     @classmethod
     def valid_url(cls, value):
-        p = urlsplit(value)
-        if p.scheme not in {"https", "http"} or not p.hostname or p.username or p.password:
-            raise ValueError("Absolute HTTP(S) URL without credentials required")
+        try:
+            p = urlsplit(value)
+            # Accessing .port validates its syntax and range; a malformed authority
+            # must not enter the evidence ledger as a usable source URL.
+            port = p.port
+        except ValueError as exc:
+            raise ValueError("Malformed HTTP(S) URL authority or port") from exc
+        if (
+            p.scheme not in {"https", "http"}
+            or not p.hostname
+            or "@" in p.netloc
+            or port == 0
+        ):
+            raise ValueError("Absolute HTTP(S) URL without credentials and with a valid port required")
         return value
 
 
