@@ -93,3 +93,34 @@ def test_refresh_normalizes_days_and_requires_comparability():
     data["comparable_scope_confirmed"] = False
     with pytest.raises(ValueError):
         plan_refresh(RefreshInput(**data))
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "https://@example.com/path",
+        "https://user@example.com/path",
+        "https://example.com:0/path",
+        "https://example.com:65536/path",
+        "https://example.com:notaport/path",
+        "https://[invalid/path",
+    ],
+)
+def test_source_rejects_malformed_authority(url):
+    with pytest.raises(ValidationError):
+        BriefInput(
+            topic="Pricing workflow",
+            audience="Small teams",
+            goal="Choose a process",
+            sources=[{**SOURCE, "url": url}],
+        )
+
+
+def test_source_accepts_valid_custom_port():
+    brief = BriefInput(
+        topic="Pricing workflow",
+        audience="Small teams",
+        goal="Choose a process",
+        sources=[{**SOURCE, "url": "https://example.com:8443/research"}],
+    )
+    assert brief.sources[0].url == "https://example.com:8443/research"
