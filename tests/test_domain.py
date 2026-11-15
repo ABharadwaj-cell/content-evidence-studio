@@ -93,3 +93,21 @@ def test_refresh_normalizes_days_and_requires_comparability():
     data["comparable_scope_confirmed"] = False
     with pytest.raises(ValueError):
         plan_refresh(RefreshInput(**data))
+
+
+def test_numeric_claim_with_unknown_citation_still_requires_review():
+    result = review_draft(
+        EditorialInput(
+            draft="\n".join(["Revenue rose 25% [S99].", "Revenue rose 25% [S1]."]),
+            sources=[SOURCE],
+        )
+    )
+    numeric_findings = [
+        finding for finding in result["findings"]
+        if finding["code"] == "numeric_claim_review"
+    ]
+    assert [finding["line"] for finding in numeric_findings] == [1]
+    assert any(
+        finding["code"] == "unknown_citation" and finding["evidence"] == "S99"
+        for finding in result["findings"]
+    )
