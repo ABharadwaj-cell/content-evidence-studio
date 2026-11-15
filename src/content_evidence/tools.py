@@ -164,7 +164,7 @@ def review_draft(p: EditorialInput) -> dict:
         plain = re.sub(r"\[S\d+\]", "", line)
         if re.search(
             r"\b\d+(?:\.\d+)?\s*(?:%|percent|million|billion|times)\b|\d+%", plain, re.I
-        ) and not re.search(r"\[S\d+\]", line):
+        ) and not (set(re.findall(r"\[(S\d+)\]", line)) & known):
             findings.append(
                 {
                     "code": "numeric_claim_review",
